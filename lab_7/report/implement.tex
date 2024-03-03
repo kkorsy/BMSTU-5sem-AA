@@ -1,0 +1,122 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги реализаций алгоритмов поиска в двоичном и АВЛ-дереве.
+
+\section{Средства реализации}
+
+В данной работе для реализации был выбран язык программирования \textit{С++} \cite{cpp}. 
+
+\section{Описание используемых типов данных}
+
+При реализации будут использованы следующие типы и структуры данных:
+\begin{itemize}[label=---]
+	\item \textit{Node} --- структура для узла двоичного дерева, содержащая 3 поля:
+	\begin{itemize}
+		\item \textit{int} --- поле для данных;
+		\item \textit{Node*} --- указатель на левое поддерево;
+		\item \textit{Node*} --- указатель на правое поддерево;
+	\end{itemize}
+	\item \textit{NodeAvl} --- структура для узла АВЛ-дерева, содержащая 4 поля:
+	\begin{itemize}
+		\item \textit{int} --- поле для данных;
+		\item \textit{NodeAvl*} --- указатель на левое поддерево;
+		\item \textit{NodeAvl*} --- указатель на правое поддерево;
+		\item \textit{int} --- поле, содержащее высоту дерева;
+	\end{itemize}
+\end{itemize}
+
+\newpage
+\section{Сведения о модулях программы}
+
+Программа состоит из трех модулей:
+\begin{itemize}[label={---}]
+	\item \textit{main.cpp} --- файл, содержащий код для выбора алгоритма, а также замеров количества сравнений;
+	\item \textit{avl\_tree.cpp} --- файл, обеспечивающий взаимодействие с АВЛ-деревом;
+	\item \textit{tree.cpp} --- файл, обеспечивающий взаимодействие с двоичным деревом;
+\end{itemize}
+
+\section{Реализация алгоритмов}
+
+В листингах~\ref{lst:avl}~--~\ref{lst:ddp2} представлены реализации алгоритмов поиска в двоичном и АВЛ-дереве.
+
+\lstinputlisting[label=lst:avl, caption={Реализация алгоритма поиска в АВЛ-дереве}, firstline=178, lastline=192]{../avl\_tree.cpp}
+
+\lstinputlisting[label=lst:ddp1, caption={Реализация алгоритма поиска в двоичном дереве (начало)}, firstline=30, lastline=35]{../tree.cpp}
+
+\lstinputlisting[label=lst:ddp2, caption={Реализация алгоритма поиска в двоичном дереве (окончание)}, firstline=35, lastline=44]{../tree.cpp}
+
+\section{Функциональные тесты}
+
+В таблице \ref{tbl:functional_test} приведены тесты для функций, реализующих алгоритмы поиска в двоичном и АВЛ-дереве. В качестве результата ожидается сообщение (найден ли элемент). Тесты \textit{для всех алгоритмов} пройдены успешно. 
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{longtable}[c]{|c|c|c|c|c|}
+		\caption{Функциональные тесты\label{tbl:functional_test}} \\ \hline
+		\begin{tabular}{c}
+			Значения,\\содержащиеся\\в узлах дерева
+		\end{tabular} &
+		\begin{tabular}{c}
+			Искомый\\элемент
+		\end{tabular}
+		 & \begin{tabular}{c}
+		 	Ожидаемый\\результат
+		 \end{tabular} & \begin{tabular}{c}
+		 Результат\\поиска в\\АВЛ-дереве
+		 \end{tabular} & \begin{tabular}{c}
+		 Результат\\поиска в\\двоичном\\дереве
+		 \end{tabular} \\ \hline
+		\{0, 1, 2, 3\} & 0 & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} & \begin{tabular}{c}
+		<<Элемент\\найден>>
+		\end{tabular} & \begin{tabular}{c}
+		<<Элемент\\найден>>
+		\end{tabular} \\ \hline
+		
+		\{0, 1, 2, 3\} & 3 & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} \\ \hline
+		
+		\{0\} & 0 & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\найден>>
+		\end{tabular} \\ \hline
+		
+		\{0\} & 1 & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} \\ \hline
+		
+		\{\} & 1 & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} \\ \hline
+		
+		\{0, 1, 2, 3\} & 5 & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} & \begin{tabular}{c}
+			<<Элемент\\не найден>>
+		\end{tabular} \\ \hline
+		
+	\end{longtable}
+\end{center}
+
+\section{Вывод}
+
+Были представлены реализации алгоритмов поиска в двоичном и АВЛ-дереве, которые были описаны в предыдущем разделе. Также в данном разделе была приведена информация о выбранных средствах для разработки алгоритмов.

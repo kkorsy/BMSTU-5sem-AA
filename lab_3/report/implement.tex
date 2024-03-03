@@ -1,0 +1,172 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги реализаций алгоритмов блочной сортировки, плавной сортировки и сортировки слиянием.
+
+\section{Средства реализации}
+
+В данной работе для реализации был выбран язык программирования $Python$~\cite{python-lang}. В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также построить графики. Все эти инструменты присутствуют в выбранном языке программирования.
+
+Время работы было замерено с помощью функции \textit{process\_time} из библиотеки $time$~\cite{python-lang-time}.
+
+\section{Описание используемых типов данных}
+
+При реализации будут использованы следующие типы и структуры данных:
+
+\begin{itemize}[label=---]
+	\item тип \textit{int} для количества элементов массива;
+	\item \textit{массив ячеек типа int} для входного массива.
+\end{itemize}
+
+\section{Сведения о модулях программы}
+
+Программа состоит из двух модулей:
+\begin{itemize}[label={---}]
+	\item \textit{main.py} --- файл, содержащий весь служебный код;
+	\item \textit{sort.py} --- файл, содержащий реализации алгоритмов.
+\end{itemize}
+
+\section{Реализация алгоритмов}
+
+В листингах~\ref{lst:block}~---~\ref{lst:merge} представлены реализации алгоритмов блочной сортировки, плавной сортировки и сортировки слиянием.
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:block,caption=Реализация алгоритма блочной сортировки]
+def block_sort(a):
+	n = len(a)
+	size = max(a) / n
+	blocks_list = []
+	for i in range(n):
+		blocks_list.append([])
+	
+	for i in range(n):
+		j = int(a[i] / size)
+		if j != n:
+			blocks_list[j].append(a[i])
+		else:
+			blocks_list[-1].append(a[i])
+	
+	for i in range(n):
+		blocks_list[i] = sorted(blocks_list[i])
+	
+	res = []
+	for i in range(n):
+		res += blocks_list[i]
+	return res
+	\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:smooth,caption=Реализация алгоритма плавной сортировки]
+def smooth_sort(a):
+	leonardo_numbers = [1, 1]
+	next_number = leonardo_numbers[-1] + leonardo_numbers[-2] + 1
+	while len(a) > next_number:
+		leonardo_numbers.append(next_number)
+		next_number = leonardo_numbers[-1] + leonardo_numbers[-2] + 1
+	leonardo_numbers.reverse()
+	
+	list_heaps = []
+	j = 0
+	for i in leonardo_numbers:
+		if len(a) - j >= i:
+			list_heaps.append(a[j:j + i])
+			j += i
+	
+	for heap in list_heaps:
+		heapq.heapify(heap)
+	list_heaps.reverse()
+	
+	a.clear()
+	while len(list_heaps):
+		flag = False
+	
+		min_index = list_heaps.index(min(list_heaps))
+		current_root = list_heaps[0][0]
+		current_min = list_heaps[min_index][0]
+		
+		heapq.heapreplace(list_heaps[0], current_min)
+		heapq.heapreplace(list_heaps[min_index], current_root)
+	
+		if len(list_heaps[0]) > 1:
+			heap_left, heap_right = heap_division(list_heaps[0])
+			flag = True
+		
+		minimum = heapq.heappop(list_heaps[0])
+		a.append(minimum)
+		
+		list_heaps.pop(0)
+		if flag:
+			list_heaps.insert(0, heap_left)
+			list_heaps.insert(0, heap_right)
+	return a
+	\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:merge,caption=Реализация алгоритма сортировки слиянием]
+def merge_sort(a):
+	if len(a) > 1:
+		mid = len(a) // 2
+		left = a[:mid]
+		right = a[mid:]
+		merge_sort(left)
+		merge_sort(right)
+		i = j = k = 0
+		while i < len(left) and j < len(right):
+			if left[i] < right[j]:
+				a[k] = left[i]
+				i += 1
+			else:
+				a[k] = right[j]
+				j += 1
+			k += 1
+		
+		while i < len(left):
+			a[k] = left[i]
+			i += 1
+			k += 1
+		while j < len(right):
+			a[k] = right[j]
+			j += 1
+			k += 1
+	
+	return a
+	\end{lstlisting}
+\end{center}
+
+\section{Функциональные тесты}
+
+В таблице \ref{tbl:functional_test} приведены тесты для функций, реализующих алгоритмы описанных сортировок. Тесты \textit{для всех алгоритмов} пройдены успешно.
+
+\begin{table}[H]
+	\begin{center}
+		\begin{threeparttable}
+			\captionsetup{justification=raggedright,singlelinecheck=off}
+			\caption{\label{tbl:functional_test} Функциональные тесты}
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				&&\multicolumn{3}{c|}{Ожидаемый результат} \\
+				\hline
+				№&Массив&Блочная сорт.&Плавная сорт.&Сорт. слиянием \\
+				\hline
+				1&$[]$&$[]$&$[]$&$[]$ \\
+				\hline
+				2&$[5]$&$[5]$&$[5]$&$[5]$ \\
+				\hline
+				3&$[1, 2, 3, 4, 5]$&$[1, 2, 3, 4, 5]$&$[1, 2, 3, 4, 5]$&$[1, 2, 3, 4, 5]$ \\
+				\hline
+				4&$[5, 4, 3, 2, 1]$&$[1, 2, 3, 4, 5]$&$[1, 2, 3, 4, 5]$&$[1, 2, 3, 4, 5]$ \\
+				\hline
+				5&$[1, 1, 1]$&$[1, 1, 1]$&$[1, 1, 1]$&$[1, 1, 1]$ \\
+				\hline
+			\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+\section{Вывод}
+
+Были представлены реализации алгоритмов блочной сортировки, плавной сортировки и сортировки слиянием, которые были описаны в предыдущем разделе. Также в данном разделе была приведена информация о выбранных средствах для разработки алгоритмов.

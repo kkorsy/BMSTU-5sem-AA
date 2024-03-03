@@ -1,0 +1,183 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги алгоритмов определения расстояния Левенштейна и Дамерау --- Левенштейна.
+
+\section{Средства реализации}
+В данной работе для реализации был выбран язык программирования $Python$~\cite{python-lang}. В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также построить графики. Все эти инструменты присутствуют в выбранном языке программирования.
+
+Время работы было замерено с помощью функции \textit{process\_time} из библиотеки $time$~\cite{python-lang-time}.
+
+\section{Описание используемых типов данных}
+
+При реализации будут использованы следующие структуры данных:
+\begin{itemize}[label={---}]
+	\item тип \textit{str} для входных строк;
+	\item тип \textit{int} для длины строки;
+	\item \textit{двумерный массив ячеек типа int} --- матрица для нерекурсивных алгоритмов и алгоритма с использованием кэша.
+\end{itemize}
+
+\section{Реализация алгоритмов}
+
+В листингах~\ref{lst:rec}--\ref{lst:opt_matr} представлены реализации алгоритмов нахождения расстояний Левенштейна и Дамерау --- Левенштейна. Причем расстояние Левенштейна в нерекурсивных реализациях находится с помощью той же функции, что и для Дамерау --- Левенштейна, но параметр \textit{flag} принимает значение \textit{False}.
+
+\clearpage
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+\begin{lstlisting}[label=lst:rec,caption=Алгоритм нахождения расстояния Дамерау--Левенштейна (рекурсивный)]
+def distance(sub_1, sub_2):
+	if len(sub_1) == 0 and len(sub_2) == 0:
+		return 0
+	if len(sub_1) == 0 and len(sub_2) > 0:
+		return len(sub_2)
+	if len(sub_1) > 0 and len(sub_2) == 0:
+		return len(sub_1)
+
+	m = min(
+		distance(sub_1, sub_2[:-1]) + 1,
+		distance(sub_1[:-1], sub_2) + 1,
+		distance(sub_1[:-1], sub_2[:-1]) + (0 if sub_1[-1] == sub_2[-1] else 1)
+		)
+
+	# transpose is possible
+	if len(sub_1) > 1 and len(sub_2) > 1 and sub_1[-2] == sub_2[-1] and sub_1[-1] == sub_2[-2]:
+		return min(m, distance(sub_1[:-2], sub_2[:-2]) + 1)
+	
+	return m
+		
+\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:rec_cache,caption=Алгоритм нахождения расстояния Дамерау--Левенштейна (рекурсивный с кэшем)]
+def recursive_with_cache(s1, s2, output=True):
+	def get_value(cache, i, j):
+		if i == 0 and j == 0:
+			cache[i][j] = 0
+			return 0
+		if i == 0 and j > 0:
+			cache[i][j] = j
+			return j
+		if i > 0 and j == 0:
+			cache[i][j] = i
+			return i
+		if cache[i][j] < float('inf'):
+			return cache[i][j]
+		
+		cache[i][j] = min(
+			get_value(cache, i, j - 1) + 1,
+			get_value(cache, i - 1, j) + 1,
+			get_value(cache, i - 1, j - 1) + (0 if s1[i - 1] == s2[j - 1] else 1)
+			)
+		if i > 1 and j > 1 and s1[i - 1] == s2[j - 2] and s1[i - 2] == s2[j - 1]:
+			cache[i][j] = min(cache[i][j], get_value(cache, i - 2, j - 2) + 1)
+		return cache[i][j]
+	
+	l1, l2 = len(s1), len(s2)
+	cache = get_matrix(l1, l2)
+	
+	result = get_value(cache, l1, l2)
+	if output:
+		print_matrix(s1, s2, cache)
+	
+	return result
+	\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:matr,caption=Алгоритм нахождения расстояния Дамерау--Левенштейна (матричный)]
+def full_matrix(s1, s2, flag, output=True):
+	l1, l2 = len(s1), len(s2)
+	matrix = get_matrix(l1, l2)
+	
+	for i in range(1, l1 + 1):
+		for j in range(1, l2 + 1):
+			matrix[i][j] = min(
+				matrix[i - 1][j] + 1,
+				matrix[i][j - 1] + 1,
+				matrix[i - 1][j - 1] + (0 if s1[i - 1] == s2[j - 1] else 1)
+				)
+			if flag and i > 1 and j > 1 and s1[i - 1] == s2[j - 2] and s1[i - 2] == s2[j - 1]:
+				matrix[i][j] = min(matrix[i][j], matrix[i - 2][j - 2] + 1)
+	
+	if output:
+	print_matrix(s1, s2, matrix)
+	
+	return matrix[-1][-1]
+	\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:opt_matr,caption=Алгоритм нахождения расстояния Дамерау--Левенштейна (оптимизированный матричный)]
+def optimised(s1, s2, flag):
+	l1, l2 = len(s1), len(s2)
+	# line_2 - current
+	line_0, line_1, line_2 = [float('inf')] * (l2 + 1), [i for i in range(l2 + 1)], [float('inf')] * (l2 + 1)
+	
+	for i in range(1, l1 + 1):
+		line_2[0] = i
+		for j in range(1, l2 + 1):
+			line_2[j] = min(
+				line_1[j] + 1,
+				line_2[j - 1] + 1,
+				line_1[j - 1] + (0 if s1[i - 1] == s2[j - 1] else 1)
+				)
+			if flag and i > 1 and j > 1 and s1[i - 1] == s2[j - 2] and s1[i - 2] == s2[j - 1]:
+				line_2[j] = min(line_2[j], line_0[j - 2] + 1)
+		
+		line_0, line_1, line_2 = line_1, line_2, [float('inf')] * (l2 + 1)
+	
+	return line_1[-1]
+	\end{lstlisting}
+\end{center}
+
+\section{Функциональные тесты}
+
+В таблице~\ref{tbl:functional_test} приведены тесты для функций, реализующих алгоритмы нахождения расстояния Левенштейна и Дамерау --- Левенштейна. Тесты \textit{для всех алгоритмов} пройдены успешно.
+
+\begin{table}[h]
+	\begin{center}
+		\begin{threeparttable}
+			\captionsetup{justification=raggedright,singlelinecheck=off}
+			\caption{\label{tbl:functional_test} Функциональные тесты}
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				&\multicolumn{2}{c|}{}&\multicolumn{2}{c|}{Ожидаемый результат} \\
+				\hline
+				№&Строка 1&Строка 2&Левенштейн&Дамерау-Л. \\
+				\hline
+				1&"пустая строка"&"пустая строка"&0&0 \\
+				\hline
+				2&"пустая строка"&слово&5&5 \\
+				\hline
+				3&проверка&"пустая строка"&8&8 \\
+				\hline
+				4&ремонт&емонт&1&1 \\
+				\hline
+				5&гигиена&иена&3&3 \\
+				\hline
+				6&слон&салон&1&1 \\
+				\hline
+				7&спасибо&пожалуйста&9&9 \\
+				\hline
+				8&что&кто&1&1 \\
+				\hline
+				9&ты&тыква&3&3 \\
+				\hline
+				10&есть&кушать&4&4 \\
+				\hline
+				11&abba&baab&3&2 \\
+				\hline
+				12&abcba&bacab&4&2 \\
+				\hline
+			\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+\section*{Вывод}
+
+Были представлены всех алгоритмов нахождения расстояний Левенштейна и Дамерау --- Левенштейна, которые были описаны в предыдущем разделе. Также в данном разделе была приведена информации о выбранных средствах для разработки алгоритмов.

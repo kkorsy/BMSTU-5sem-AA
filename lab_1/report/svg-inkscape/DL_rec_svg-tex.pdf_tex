@@ -1,0 +1,116 @@
+%% Creator: Inkscape 1.3 (0e150ed6c4, 2023-07-21), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'DL_rec_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{576bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.52994792)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{DL_rec_svg-tex.pdf}}%
+    \put(0.36911601,1.47725677){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Начало\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{DL_rec_svg-tex.pdf}}%
+    \put(0.6032414,1.49210352){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Расстояние Дамерау-Левенштейна(s1, s2)\end{tabular}}}}%
+    \put(0.6032414,1.47296146){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(далее ДЛ(s1, s2))\end{tabular}}}}%
+    \put(0.6032414,1.45381927){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l} \end{tabular}}}}%
+    \put(0.6032414,1.43467708){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Вход: строки s1, s2\end{tabular}}}}%
+    \put(0.6032414,1.41553502){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Выход: число - расстояние Дамерау-Левенштейна\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{DL_rec_svg-tex.pdf}}%
+    \put(0.37137812,1.37888971){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Длина \end{tabular}}}}%
+    \put(0.33734336,1.35974753){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s1 == 0 и длина \end{tabular}}}}%
+    \put(0.36601472,1.34060548){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s2 == 0?\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{DL_rec_svg-tex.pdf}}%
+    \put(0.36582019,0.73623125){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}m = min(\end{tabular}}}}%
+    \put(0.33107968,0.7170891){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ДЛ(s1, s2[:-1]) + 1,\end{tabular}}}}%
+    \put(0.33064856,0.69794703){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ДЛ(s1[:-1], s2) + 1)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{DL_rec_svg-tex.pdf}}%
+    \put(0.57714673,1.28478386){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Возврат 0\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{DL_rec_svg-tex.pdf}}%
+    \put(0.54765912,1.05976458){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Возврат длины s2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{DL_rec_svg-tex.pdf}}%
+    \put(0.54765912,0.83458233){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Возврат длины s1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{DL_rec_svg-tex.pdf}}%
+    \put(0.57136226,0.27413662){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Возврат min(m, \end{tabular}}}}%
+    \put(0.54989688,0.25499455){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ДЛ(s1[:-2], s2[:-2] + 1))\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{DL_rec_svg-tex.pdf}}%
+    \put(0.35818698,0.14707247){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Возврат m\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{DL_rec_svg-tex.pdf}}%
+    \put(0.37439179,0.03974454){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Конец\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{DL_rec_svg-tex.pdf}}%
+    \put(0.37137812,1.15387042){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Длина \end{tabular}}}}%
+    \put(0.33734336,1.13472827){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s1 == 0 и длина \end{tabular}}}}%
+    \put(0.37057708,1.1155862){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s2 > 0?\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{DL_rec_svg-tex.pdf}}%
+    \put(0.37137812,0.92868817){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Длина \end{tabular}}}}%
+    \put(0.34190573,0.90954598){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s1 > 0 и длина \end{tabular}}}}%
+    \put(0.36601472,0.89040379){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s2 == 0?\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{DL_rec_svg-tex.pdf}}%
+    \put(0.33953307,0.59260011){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s1[-1] == s2[-1]?\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{DL_rec_svg-tex.pdf}}%
+    \put(0.52169494,0.5176363){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}m = min(m, ДЛ(s1[:-1], s2[:-1]))\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{DL_rec_svg-tex.pdf}}%
+    \put(0.03285521,0.5176363){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}m = min(m, ДЛ(s1[:-1], s2[:-1] + 1))\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{DL_rec_svg-tex.pdf}}%
+    \put(0.34117331,0.36824242){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Длина s1 > 1 и \end{tabular}}}}%
+    \put(0.3440763,0.34910035){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}длина s2 > 1 и\end{tabular}}}}%
+    \put(0.33734336,0.3299582){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s1[-2] == s2[-1] и\end{tabular}}}}%
+    \put(0.33953307,0.31081605){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s1[-1] == s2[-2]?\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{DL_rec_svg-tex.pdf}}%
+    \put(0.5350194,1.37583073){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Да\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{DL_rec_svg-tex.pdf}}%
+    \put(0.53696887,1.14954428){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Да\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{DL_rec_svg-tex.pdf}}%
+    \put(0.53599413,0.92562902){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Да\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{DL_rec_svg-tex.pdf}}%
+    \put(0.5361112,0.60850779){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Да\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{DL_rec_svg-tex.pdf}}%
+    \put(0.53599413,0.3570745){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Да\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{DL_rec_svg-tex.pdf}}%
+  \end{picture}%
+\endgroup%

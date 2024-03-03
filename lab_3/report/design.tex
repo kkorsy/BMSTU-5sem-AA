@@ -1,0 +1,375 @@
+\chapter{Конструкторская часть}
+
+В этом разделе будут представлены схемы алгоритмов блочной сортировки, плавной сортировки и сортировки слиянием.
+
+\section{Разработка алгоритмов}
+
+На рисунках~\ref{img:blocksort1}~---~\ref{img:smoothsort3} представлены схемы алгоритмов сортировок.
+
+\inputPdf{blocksort1}{Схема алгоритма блочной сортировки (часть 1)}
+
+\inputPdf{blocksort2}{Схема алгоритма блочной сортировки (часть 2)}
+
+\inputPdf{mergesort1}{Схема алгоритма сортировки слиянием (часть 1)}
+
+\inputPdf{mergesort2}{Схема алгоритма сортировки слиянием (часть 2)}
+
+\inputPdf{smoothsort1}{Схема алгоритма плавной сортировки (часть 1)}
+
+\inputPdf{smoothsort2}{Схема алгоритма плавной сортировки (часть 2)}
+
+\inputPdf{smoothsort3}{Схема алгоритма плавной сортировки (часть 3)}
+
+\section{Модель вычислений}
+
+\begin{enumerate}
+	\item Трудоемкость базовых операций.
+	
+	Следующие операторы имеют трудоемкость 1:
+	$$+, -, +=, -=, =, ==, !=, >=, <=, >, <,$$
+	$$>>, <<, [], \&, |, \&\&, ||, ++, --$$
+	
+	Следующие операторы имеют трудоемкость 2:
+	$$*, /, \%, *=, /=$$
+	
+	\item Условный оператор.
+	
+	Для конструкций вида:
+	\begin{lstlisting}
+if (условие)
+{
+	Блок 1;
+}
+else
+{
+	Блок 2;
+}
+	\end{lstlisting}
+	Пусть трудоемкость блока 1 --- $f_1$, блока 2 --- $f_2$. Пусть также трудоемкость условного перехода --- 0.
+	
+	Тогда трудоемкость условного оператора:
+	\begin{equation}
+		f_{if} = f_\textup{вычисления условия} + 
+		\left[ \begin{gathered}
+			\min(f_1, f_2), \textup{лучший случай}\\
+			\max(f_1, f_2), \textup{худший случай}
+		\end{gathered}
+		\right.
+	\end{equation}
+	
+	\item Трудоемкость циклов.
+	
+	Трудоемкость циклов вычисляется по следующей формуле:
+	
+	\begin{equation}
+	\begin{aligned}
+		f_\textup{цикла} =& f_\textup{инициализации} + f_\textup{сравнения} + \\
+		& + M_\textup{шагов} \cdot (f_\textup{тела} + f_\textup{инкремента} + f_\textup{сравнения})
+	\end{aligned}
+	\end{equation}
+	
+\end{enumerate}
+
+\section{Трудоемкость алгоритмов}
+
+Рассчитаем трудоемкость алгоритмов сортировок.
+
+\subsection{Алгоритм блочной сортировки}
+
+В таблице \ref{tbl:block_weight} представлена построчная оценка трудоемкости блочной сортировки.
+\begin{table}[H]
+	\begin{center}
+		\begin{threeparttable}
+			\captionsetup{}
+			\caption{\label{tbl:block_weight}Построчная оценка трудоемкости блочной сортировки}
+			\begin{tabular}{|l|c|}
+				\hline
+				Строка кода & Вес \\
+				\hline
+				n = len(a) & 2\\
+				\hline
+				size = max(a) / n & 4\\
+				\hline
+				blocks\_list = [] & 1\\
+				\hline
+				for i in range(n): & 2\\
+				\hline
+				~~blocks\_list.append([]) & 1\\
+				\hline
+				
+				for i in range(n): & 2\\
+				\hline
+				~~j = int(a[i] / size) & 5\\
+				\hline
+				~~if j != n: & 1\\
+				\hline
+				~~~~blocks\_list[j].append(a[i]) & 3\\
+				\hline
+				~~else: & 0\\
+				\hline
+				~~~~blocks\_list[-1].append(a[i]) & 3\\
+				\hline
+				
+				for i in range(n): & 2\\
+				\hline
+				~~blocks\_list[i] = sorted(blocks\_list[i]) & 4\\
+				\hline
+				
+				res = [] & 1\\
+				\hline
+				for i in range(n): & 2\\
+				\hline
+				~~res += blocks\_list[i] & 2\\
+				\hline
+				return res & 0\\
+				\hline
+			\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+В лучшем случае, когда массив отсортирован по возрастанию, трудоемкость:
+
+\begin{equation}
+	f = O(N)
+\end{equation}
+
+В худшем случае, когда массив отсортирован по убыванию, трудоемкость:
+
+\begin{equation}
+	f = O(N^2)
+\end{equation}
+
+
+\subsection{Алгоритм плавной сортировки}
+
+В таблице \ref{tbl:smooth_weight} представлена построчная оценка трудоемкости плавной сортировки.
+\begin{table}[H]
+	\begin{center}
+		\begin{threeparttable}
+			\captionsetup{}
+			\caption{\label{tbl:smooth_weight}Построчная оценка трудоемкости плавной сортировки}
+			\begin{tabular}{|l|c|}
+				\hline
+				Строка кода & Вес \\
+				\hline
+				leonardo\_numbers = [1, 1] & 1\\
+				\hline
+				next\_number = leonardo\_numbers[-1] + leonardo\_numbers[-2] + 1 & 5\\
+				\hline
+				while len(a) > next\_number: & 2\\
+				\hline
+				~~leonardo\_numbers.append(next\_number) & 1\\
+				\hline
+				~~next\_number = leonardo\_numbers[-1] + leonardo\_numbers[-2] + 1 & 5\\
+				\hline
+				leonardo\_numbers.reverse() & 1\\
+				\hline
+				list\_heaps, j = [], 0 & 2\\
+				\hline
+				for i in leonardo\_numbers: & 2\\
+				\hline
+				~~if len(a) - j >= i: & 3\\
+				\hline
+				~~~~list\_heaps.append(a[j:j + i]) & 2\\
+				\hline
+				~~~~j += i & 1\\
+				\hline
+				for heap in list\_heaps: & 2\\
+				\hline
+				~~heapq.heapify(heap) & 1\\
+				\hline
+				list\_heaps.reverse() & 1\\
+				\hline
+				a.clear() & 1\\
+				\hline
+				while len(list\_heaps): & 2\\
+				\hline
+				~~flag = False & 1\\
+				\hline
+				~~min\_index = list\_heaps.index(min(list\_heaps)) & 3\\
+				\hline
+				~~current\_root = list\_heaps[0][0] & 3\\
+				\hline
+				~~current\_min = list\_heaps[min\_index][0] & 3\\
+				\hline
+				~~heapq.heapreplace(list\_heaps[0], current\_min) & 2\\
+				\hline
+				~~heapq.heapreplace(list\_heaps[min\_index], current\_root) & 2\\
+				\hline
+				~~if len(list\_heaps[0]) > 1: & 3\\
+				\hline
+				~~~~heap\_left, heap\_right = heap\_division(list\_heaps[0]) & 4\\
+				\hline
+				~~~~flag = True & 1\\
+				\hline
+				~~minimum = heapq.heappop(list\_heaps[0]) & 3\\
+				\hline
+				~~a.append(minimum) & 1\\
+				\hline
+				~~list\_heaps.pop(0) & 1\\
+				\hline
+				~~if flag: & 1\\
+				\hline
+				~~~~list\_heaps.insert(0, heap\_left) & 1\\
+				\hline
+				~~~~list\_heaps.insert(0, heap\_right) & 1\\
+				\hline
+				return a & 0\\
+				\hline
+			\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+В лучшем случае, когда массив отсортирован по возрастанию, трудоемкость:
+
+\begin{equation}
+	f = O(N)
+\end{equation}
+
+В худшем случае, когда массив отсортирован по убыванию, трудоемкость:
+
+\begin{equation}
+	f = O(NlogN)
+\end{equation}
+
+\subsection{Алгоритм сортировки слиянием}
+
+В таблице \ref{tbl:merge_weight} представлена построчная оценка трудоемкости сортировки слиянием.
+\begin{table}[H]
+	\begin{center}
+		\begin{threeparttable}
+			\captionsetup{}
+			\caption{\label{tbl:merge_weight}Построчная оценка трудоемкости сортировки слиянием}
+			\begin{tabular}{|l|c|}
+				\hline
+				Строка кода & Вес \\
+				\hline
+				if len(a) > 1: & 2\\
+				\hline
+				~~mid = len(a) // 2 & 4\\
+				\hline
+				~~left = a[:mid] & 2\\
+				\hline
+				~~right = a[mid:] & 2\\
+				\hline
+				~~merge\_sort(left) & 0\\
+				\hline
+				~~merge\_sort(right) & 0\\
+				\hline
+				~~i = j = k = 0 & 3\\
+				\hline
+				~~while i < len(left) and j < len(right): & 5\\
+				\hline
+				~~~~if left[i] < right[j]: & 3\\
+				\hline
+				~~~~~~a[k] = left[i] & 3\\
+				\hline
+				~~~~~~i += 1 & 1\\
+				\hline
+				~~~~else: & 0\\
+				\hline
+				~~~~~~a[k] = right[j] & 3\\
+				\hline
+				~~~~~~j += 1 & 1\\
+				\hline
+				~~~~k += 1 & 1\\
+				\hline
+				~~while i < len(left): & 2\\
+				\hline
+				~~~~a[k] = left[i] & 3\\
+				\hline
+				~~~~i += 1 & 1\\
+				\hline
+				~~~~k += 1 & 1\\
+				\hline
+				~~while j < len(right): & 2\\
+				\hline
+				~~~~a[k] = right[j] & 3\\
+				\hline
+				~~~~j += 1 & 1\\
+				\hline
+				~~~~k += 1 & 1\\
+				\hline
+				return a & 0\\
+				\hline
+			\end{tabular}
+		\end{threeparttable}
+	\end{center}
+\end{table}
+
+В лучшем случае, когда массив отсортирован по возрастанию, трудоемкость:
+
+\begin{equation}
+	f = O(NlogN)
+\end{equation}
+
+В худшем случае, когда массив отсортирован по убыванию, трудоемкость:
+
+\begin{equation}
+	f = O(NlogN)
+\end{equation}
+
+\section{Классы эквивалентности тестирования}
+
+Для тестирования выделены следующие классы эквивалентности:
+\begin{enumerate}
+	\item массив пустой;
+	\item массив состоит из одного элемента;
+	\item массив отсортирован;
+	\item массив отсортирован в обратном порядке;
+	\item все элементы массива одинаковые.
+\end{enumerate}
+
+\section{Использование памяти}
+
+Пусть $n$ --- число элементов входного массива. Тогда рассчитаем затраты памяти для каждого алгоритма сортировки.
+
+\begin{enumerate}
+	\item Алгоритм блочной сортировки:
+	\begin{itemize}[label=---]
+		\item результирующий массив: $n \cdot sizeof(int)$;
+		\item массив блоков: $n \cdot sizeof(int)$;
+		\item дополнительные переменные: $sizeof(double) + sizeof(int)$.
+	\end{itemize}
+	
+	Таким образом, необходимая память: %836
+	\begin{equation}
+		\label{eq:blockmem}
+		sizeof(int) \cdot (2n + 1) + sizeof(double)
+	\end{equation}
+	
+	\item Алгоритм плавной сортировки:
+	\begin{itemize}[label=---]
+		\item массив чисел Леонардо: $k \cdot sizeof(int)$, где $k$ --- количество чисел Леонардо;
+		\item массив куч: $k \cdot n \cdot sizeof(int)$;
+		\item дополнительные переменные: $8 \cdot sizeof(int)$.
+	\end{itemize}
+	
+	Таким образом, необходимая память: %<2 - 840, <3 - 1244, <4 - 1648
+	\begin{equation}
+		\label{eq:smoothmem}
+		sizeof(int) \cdot (k(1 + n) + 8)
+	\end{equation}
+	
+	\item Алгоритм сортировки слиянием:
+	\begin{itemize}[label=---]
+		\item левый и правый подмассивы массива а: $\log_2n \cdot n \cdot sizeof(int)$;
+		\item дополнительные переменные: $\log_2n \cdot 4 \cdot sizeof(int)$.
+	\end{itemize}
+	
+	Таким образом, необходимая память для всего дерева рекурсивных вызовов, высотой $\log_2n$: %2763
+	\begin{equation}
+		\label{eq:mergemem}
+		\log_2n \cdot sizeof(int) \cdot (n + 4)
+	\end{equation}
+\end{enumerate}
+
+\section*{Вывод}
+
+Сравнивая формулы~(\ref{eq:blockmem}), (\ref{eq:smoothmem}) и~(\ref{eq:mergemem}), можно сделать вывод, что меньше всего памяти необходимо для реализации алгоритма блочной сортировки, а больше всего --- для реализации алгоритма сортировки слиянием, поскольку она выполняется рекурсивно.
+
+\section{Вывод}
+
+В данном разделе были представлены схемы алгоритмов, рассматриваемых в лабораторной работе.

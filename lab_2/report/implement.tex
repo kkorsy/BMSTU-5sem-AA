@@ -1,0 +1,255 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут рассмотрены средства реализации, а также представлены листинги алгоритмов Винограда и его оптимизации.
+
+\section{Средства реализации}
+
+В данной работе для реализации был выбран язык программирования $Python$~\cite{python-lang}. В текущей лабораторной работе требуется замерить процессорное время для выполняемой программы, а также построить графики. Все эти инструменты присутствуют в выбранном языке программирования.
+
+Время работы было замерено с помощью функции \textit{process\_time} из библиотеки $time$~\cite{python-lang-time}.
+
+\section{Описание используемых типов данных}
+
+При реализации будут использованы следующие типы и структуры данных:
+
+\begin{itemize}[label=---]
+	\item тип \textit{int} для количества строк и столбцов матрицы;
+	\item \textit{двумерный массив ячеек типа int} для входных матриц, а также матрицы результата.
+\end{itemize}
+
+\section{Сведения о модулях программы}
+
+Программа состоит из двух модулей:
+
+\begin{itemize}[label={---}]
+	\item \textit{main.py} --- файл, содержащий весь служебный код;
+	\item \textit{algorythms.py} --- файл, содержащий реализации алгоритмов.
+\end{itemize}
+
+\section{Реализация алгоритмов}
+
+В листингах~\ref{lst:classic}~---~\ref{lst:vinopt} представлены реализации классического алгоритма, алгоритмов Винограда и его оптимизации.
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:classic,caption=Классический алгоритм]
+def classic(a, b):
+	m, q, n = len(a), len(a[0]), len(b[0])
+	res = [[0] * n for _ in range(m)]
+	
+	for i in range(m):
+		for j in range(n):
+			for k in range(q):
+				res[i][j] = res[i][j] + a[i][k] * b[k][j]
+	return res
+	\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:vin,caption=Алгоритм Винограда]
+def vinograd(a, b):
+	res = []
+	if len(a[0]) != len(b):
+		print("Умножение матриц с такими размерами невозможно")
+		return res
+	
+	m, q, n = len(a), len(a[0]), len(b[0])
+	for _ in range(m):
+		res.append([0] * n)
+	tmp_row, tmp_col = [0] * m, [0] * n
+	
+	for i in range(m):
+		for j in range(0, q // 2):
+			tmp_row[i] = tmp_row[i] + a[i][2 * j] * a[i][2 * j + 1]
+	
+	for i in range(n):
+		for j in range(0, q // 2):
+			tmp_col[i] = tmp_col[i] + b[2 * j][i] * b[2 * j + 1][i]
+	
+	for i in range(m):
+		for j in range(n):
+			res[i][j] = - tmp_row[i] - tmp_col[j]
+			for k in range(0, q // 2):
+				res[i][j] = res[i][j] + (a[i][2 * k] + b[2 * k + 1][j]) * (a[i][2 * k + 1] + b[2 * k][j])
+	
+	if q % 2 == 1:
+		for i in range(m):
+			for j in range(n):
+				res[i][j] = res[i][j] + a[i][q - 1] * b[q - 1][j]
+	
+	return res
+	\end{lstlisting}
+\end{center}
+
+\begin{center}
+	\captionsetup{justification=raggedright,singlelinecheck=off}
+	\begin{lstlisting}[label=lst:vinopt,caption=Оптимизированный алгоритм Винограда]
+def vinograd_optimised(a, b):
+	res = []
+	if len(a[0]) != len(b):
+		print("Умножение матриц с такими размерами невозможно")
+		return res
+	
+	m, q, n = len(a), len(a[0]), len(b[0])
+	for _ in range(m):
+		res.append([0] * n)
+	tmp_row, tmp_col = [0] * m, [0] * n
+	q_half = q // 2
+	
+	for i in range(m):
+		for j in range(0, q_half):
+			tmp_row[i] += a[i][j << 1] * a[i][(j << 1) + 1]
+	
+	for i in range(n):
+		for j in range(0, q_half):
+			tmp_col[i] += b[j << 1][i] * b[(j << 1) + 1][i]
+	
+	for i in range(m):
+		for j in range(n):
+			res[i][j] = - tmp_row[i] - tmp_col[j]
+			buf = 0
+			for k in range(0, q_half):
+				buf += (a[i][k << 1] + b[(k << 1) + 1][j]) * (a[i][(k << 1) + 1] + b[k << 1][j])
+			res[i][j] += buf
+	
+	if q % 2 == 1:
+		for i in range(m):
+			for j in range(n):
+				res[i][j] += a[i][q - 1] * b[q - 1][j]
+	
+	return res
+	\end{lstlisting}
+\end{center}
+
+\section{Функциональные тесты}
+
+В таблице \ref{tbl:functional_test} приведены тесты для функций, реализующих алгоритмы Винограда и его оптимизации. Тесты \textit{для всех алгоритмов} пройдены успешно.
+
+\begin{landscape}
+	\begin{table}[H]
+		\begin{center}
+			\captionsetup{justification=raggedright,singlelinecheck=off}
+			\caption{\label{tbl:functional_test} Функциональные тесты}
+			\begin{threeparttable}
+				\begin{tabular}{|c|c|c|c|c|c|}
+					\hline
+					&\multicolumn{2}{c|}{}&\multicolumn{3}{c|}{Ожидаемый результат} \\
+					\hline
+					№&Матрица 1&Матрица 2&Классический&Виноград&Виноград (опт.) \\
+					\hline
+					1&$\begin{pmatrix}
+						&
+					\end{pmatrix}$&$\begin{pmatrix}
+					&
+					\end{pmatrix}$&Сообщение об ошибке&Сообщение об ошибке&Сообщение об ошибке\\
+					\hline
+					2&$\begin{pmatrix}
+						1&2&3\\
+						4&5&6
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&2&3\\
+					4&5&6
+					\end{pmatrix}$&Сообщение об ошибке&Сообщение об ошибке&Сообщение об ошибке\\
+					\hline
+					3&$\begin{pmatrix}
+						2
+					\end{pmatrix}$&$\begin{pmatrix}
+						7
+					\end{pmatrix}$&$\begin{pmatrix}
+						14
+					\end{pmatrix}$&$\begin{pmatrix}
+						14
+					\end{pmatrix}$&$\begin{pmatrix}
+					14
+					\end{pmatrix}$\\
+					\hline
+					4&$\begin{pmatrix}
+						1&2&3\\
+						4&5&6\\
+						7&8&9
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&2&3\\
+					4&5&6\\
+					7&8&9
+					\end{pmatrix}$&$\begin{pmatrix}
+					30&36&42\\
+					66&81&96\\
+					102&126&150
+					\end{pmatrix}$&$\begin{pmatrix}
+					30&36&42\\
+					66&81&96\\
+					102&126&150
+					\end{pmatrix}$&$\begin{pmatrix}
+					30&36&42\\
+					66&81&96\\
+					102&126&150
+					\end{pmatrix}$\\
+					\hline
+					5&$\begin{pmatrix}
+						1&2&3\\
+						4&5&6\\
+						7&8&9
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&0&0\\
+					0&1&0\\
+					0&0&1
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&2&3\\
+					4&5&6\\
+					7&8&9
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&2&3\\
+					4&5&6\\
+					7&8&9
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&2&3\\
+					4&5&6\\
+					7&8&9
+					\end{pmatrix}$\\
+					\hline
+					6&$\begin{pmatrix}
+						1&2&3\\
+						4&5&6
+					\end{pmatrix}$&$\begin{pmatrix}
+						1&2\\
+						3&4\\
+						5&6
+					\end{pmatrix}$&$\begin{pmatrix}
+						22&28\\
+						49&64
+					\end{pmatrix}$&$\begin{pmatrix}
+						22&28\\
+						49&64
+					\end{pmatrix}$&$\begin{pmatrix}
+					22&28\\
+					49&64
+					\end{pmatrix}$\\
+					\hline
+					7&$\begin{pmatrix}
+						1&2&3\\
+						4&5&6
+					\end{pmatrix}$&$\begin{pmatrix}
+						1&0\\
+						0&1\\
+						0&0
+					\end{pmatrix}$&$\begin{pmatrix}
+						1&2\\
+						4&5
+					\end{pmatrix}$&$\begin{pmatrix}
+						1&2\\
+						4&5
+					\end{pmatrix}$&$\begin{pmatrix}
+					1&2\\
+					4&5
+					\end{pmatrix}$\\
+					\hline
+				\end{tabular}
+			\end{threeparttable}
+		\end{center}
+	\end{table}
+\end{landscape}
+
+\section{Вывод}
+
+Были представлены реализации классического алгоритма умножения матриц, алгоритмов Винограда и его оптимизации, которые были описаны в предыдущем разделе. Также в данном разделе была приведена информация о выбранных средствах для разработки алгоритмов.
